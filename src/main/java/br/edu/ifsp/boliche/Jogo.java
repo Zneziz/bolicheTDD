@@ -16,14 +16,14 @@ public class Jogo {
         int indice = 0;
 
         for (int frame = 0; frame < 10; frame++) {
-            if (jogadas[indice] == 10) {
-                pontos += 10 + jogadas[indice + 1] + jogadas[indice + 2];
+            if (ehStrike(indice)) {
+                pontos += 10 + bonusStrike(indice);
                 indice += 1;
             } else if (ehSpare(indice)) {
                 pontos += 10 + bonusSpare(indice);
                 indice += 2;
             } else {
-                pontos += jogadas[indice] + jogadas[indice + 1];
+                pontos += somaDoFrame(indice);
                 indice += 2;
             }
         }
@@ -35,11 +35,23 @@ public class Jogo {
         return false;
     }
 
+    private boolean ehStrike(int indice) {
+        return jogadas[indice] == 10;
+    }
+
     private boolean ehSpare(int indice) {
         return jogadas[indice] + jogadas[indice + 1] == 10;
     }
 
+    private int bonusStrike(int indice) {
+        return jogadas[indice + 1] + jogadas[indice + 2];
+    }
+
     private int bonusSpare(int indice) {
         return jogadas[indice + 2];
+    }
+
+    private int somaDoFrame(int indice) {
+        return jogadas[indice] + jogadas[indice + 1];
     }
 }
