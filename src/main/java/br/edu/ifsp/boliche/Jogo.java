@@ -5,11 +5,61 @@ public class Jogo {
     private final int[] jogadas = new int[21];
     private int totalJogadas = 0;
 
+    private int frameAtual = 1;
+    private boolean primeiraJogadaDoFrame = true;
+    private int pinosPrimeiroTiro = 0;
+    private int jogadasExtrasRestantes = 0;
+    private boolean emBonusDeStrikeRolo2 = false;
+
     /** Registra uma jogada com a quantidade de pinos derrubados. */
     public void jogar(int pinos) {
         if (pinos < 0 || pinos > 10) {
             throw new IllegalArgumentException("Quantidade de pinos inválida: " + pinos);
         }
+
+        if (frameAtual < 10) {
+            if (primeiraJogadaDoFrame) {
+                if (pinos == 10) {
+                    frameAtual++;
+                } else {
+                    pinosPrimeiroTiro = pinos;
+                    primeiraJogadaDoFrame = false;
+                }
+            } else {
+                if (pinosPrimeiroTiro + pinos > 10) {
+                    throw new IllegalArgumentException("A soma dos pinos no frame não pode exceder 10.");
+                }
+                primeiraJogadaDoFrame = true;
+                frameAtual++;
+            }
+        } else {
+            if (jogadasExtrasRestantes > 0) {
+                if (emBonusDeStrikeRolo2 && pinosPrimeiroTiro < 10 && pinosPrimeiroTiro + pinos > 10) {
+                    throw new IllegalArgumentException("Bônus do 10º frame não pode exceder 10 pinos sem novo strike.");
+                }
+                if (jogadasExtrasRestantes == 2) {
+                    pinosPrimeiroTiro = pinos;
+                    emBonusDeStrikeRolo2 = true;
+                }
+                jogadasExtrasRestantes--;
+            } else if (primeiraJogadaDoFrame) {
+                if (pinos == 10) {
+                    jogadasExtrasRestantes = 2;
+                    primeiraJogadaDoFrame = false;
+                } else {
+                    pinosPrimeiroTiro = pinos;
+                    primeiraJogadaDoFrame = false;
+                }
+            } else {
+                if (pinosPrimeiroTiro + pinos > 10) {
+                    throw new IllegalArgumentException("A soma dos pinos no frame não pode exceder 10.");
+                }
+                if (pinosPrimeiroTiro + pinos == 10) {
+                    jogadasExtrasRestantes = 1;
+                }
+            }
+        }
+
         jogadas[totalJogadas++] = pinos;
     }
 
