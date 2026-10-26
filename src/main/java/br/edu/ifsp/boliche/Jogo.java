@@ -7,6 +7,9 @@ public class Jogo {
 
     /** Registra uma jogada com a quantidade de pinos derrubados. */
     public void jogar(int pinos) {
+        if (pinos < 0 || pinos > 10) {
+            throw new IllegalArgumentException("Quantidade de pinos inválida: " + pinos);
+        }
         jogadas[totalJogadas++] = pinos;
     }
 
