@@ -10,6 +10,12 @@ public class JogoTest {
 
     private Jogo jogo;
 
+    private void jogarSequencia(int... pinosPorJogada) {
+        for (int pinos : pinosPorJogada) {
+            jogo.jogar(pinos);
+        }
+    }
+
     private void jogarMuitas(int quantidade, int pinos) {
         for (int i = 0; i < quantidade; i++) {
             jogo.jogar(pinos);
@@ -51,6 +57,41 @@ public class JogoTest {
         jogo.jogar(4);
         jogarMuitas(16, 0);
         assertEquals(24, jogo.pontuacao());
+        assertTrue(jogo.encerrado());
+    }
+
+    @Test
+    @DisplayName("Spare em todos os frames: 21 jogadas de 5 resultam em 150")
+    void spareEmTodosOsFrames() {
+        jogarMuitas(21, 5);
+        assertEquals(150, jogo.pontuacao());
+        assertTrue(jogo.encerrado());
+    }
+
+    @Test
+    @DisplayName("Jogo perfeito: 12 jogadas de 10 resultam em 300")
+    void jogoPerfeito() {
+        jogarMuitas(12, 10);
+        assertEquals(300, jogo.pontuacao());
+        assertTrue(jogo.encerrado());
+    }
+
+    @Test
+    @DisplayName("Partida mista resulta em 167")
+    void partidaMista() {
+        jogarSequencia(
+                10,       // Frame 1: strike
+                7, 3,     // Frame 2: spare
+                9, 0,     // Frame 3: aberto
+                10,       // Frame 4: strike
+                0, 8,     // Frame 5: aberto
+                8, 2,     // Frame 6: spare
+                0, 6,     // Frame 7: aberto
+                10,       // Frame 8: strike
+                10,       // Frame 9: strike
+                10, 8, 1  // Frame 10: strike + 2 bônus
+        );
+        assertEquals(167, jogo.pontuacao());
         assertTrue(jogo.encerrado());
     }
 
