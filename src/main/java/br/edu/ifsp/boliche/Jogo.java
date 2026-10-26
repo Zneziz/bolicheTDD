@@ -16,7 +16,10 @@ public class Jogo {
         int indice = 0;
 
         for (int frame = 0; frame < 10; frame++) {
-            if (ehSpare(indice)) {
+            if (jogadas[indice] == 10) {
+                pontos += 10 + jogadas[indice + 1] + jogadas[indice + 2];
+                indice += 1;
+            } else if (ehSpare(indice)) {
                 pontos += 10 + bonusSpare(indice);
                 indice += 2;
             } else {
