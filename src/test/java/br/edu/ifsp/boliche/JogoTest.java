@@ -43,4 +43,15 @@ public class JogoTest {
         assertTrue(jogo.encerrado());
     }
 
+    @Test
+    @DisplayName("Um strike: 10, 3, 4 e 16 jogadas de 0 resultam em 24")
+    void umStrike() {
+        jogo.jogar(10); // strike
+        jogo.jogar(3);
+        jogo.jogar(4);
+        jogarMuitas(16, 0);
+        assertEquals(24, jogo.pontuacao());
+        assertTrue(jogo.encerrado());
+    }
+
 }
