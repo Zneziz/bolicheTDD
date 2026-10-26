@@ -32,4 +32,15 @@ public class JogoTest {
         assertTrue(jogo.encerrado());
     }
 
+    @Test
+    @DisplayName("Um spare: 5, 5, 3 e 17 jogadas de 0 resultam em 16")
+    void umSpare() {
+        jogo.jogar(5);
+        jogo.jogar(5); // spare
+        jogo.jogar(3);
+        jogarMuitas(17, 0);
+        assertEquals(16, jogo.pontuacao());
+        assertTrue(jogo.encerrado());
+    }
+
 }
