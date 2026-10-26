@@ -129,5 +129,45 @@ public class JogoTest {
         jogo.jogar(7);      // 1ª jogada bônus
         assertThrows(IllegalArgumentException.class, () -> jogo.jogar(4)); // 2ª bônus inválida (7+4=11)
     }
+    @Test
+    @DisplayName("V3: Partida não está encerrada antes de completar os 10 frames")
+    void partidaNaoEncerradaDuranteOJogo() {
+        assertFalse(jogo.encerrado());
+        jogarMuitas(19, 0);
+        assertFalse(jogo.encerrado());
+    }
+
+    @Test
+    @DisplayName("V3: Jogada após 20 jogadas abertas lança IllegalStateException")
+    void jogadaAposFimDePartidaAbertaLancaExcecao() {
+        jogarMuitas(20, 0);
+        assertTrue(jogo.encerrado());
+        assertThrows(IllegalStateException.class, () -> jogo.jogar(0));
+    }
+
+    @Test
+    @DisplayName("V3: Jogada após bônus de spare no 10º frame lança IllegalStateException")
+    void jogadaAposFimDePartidaComSpareNoDecimoFrameLancaExcecao() {
+        jogarMuitas(18, 0);
+        jogo.jogar(6);
+        jogo.jogar(4); // Spare no 10º
+        assertFalse(jogo.encerrado());
+        jogo.jogar(5); // Jogada extra
+        assertTrue(jogo.encerrado());
+        assertThrows(IllegalStateException.class, () -> jogo.jogar(1));
+    }
+
+    @Test
+    @DisplayName("V3: Jogada após bônus de strike no 10º frame lança IllegalStateException")
+    void jogadaAposFimDePartidaComStrikeNoDecimoFrameLancaExcecao() {
+        jogarMuitas(18, 0);
+        jogo.jogar(10); // Strike no 10º
+        assertFalse(jogo.encerrado());
+        jogo.jogar(3);  // 1ª extra
+        assertFalse(jogo.encerrado());
+        jogo.jogar(4);  // 2ª extra
+        assertTrue(jogo.encerrado());
+        assertThrows(IllegalStateException.class, () -> jogo.jogar(1));
+    }
 
 }
