@@ -16,8 +16,8 @@ public class Jogo {
         int indice = 0;
 
         for (int frame = 0; frame < 10; frame++) {
-            if (jogadas[indice] + jogadas[indice + 1] == 10) { // Spare
-                pontos += 10 + jogadas[indice + 2];
+            if (ehSpare(indice)) {
+                pontos += 10 + bonusSpare(indice);
                 indice += 2;
             } else {
                 pontos += jogadas[indice] + jogadas[indice + 1];
@@ -30,5 +30,13 @@ public class Jogo {
     /** Indica se a partida já terminou. */
     public boolean encerrado() {
         return false;
+    }
+
+    private boolean ehSpare(int indice) {
+        return jogadas[indice] + jogadas[indice + 1] == 10;
+    }
+
+    private int bonusSpare(int indice) {
+        return jogadas[indice + 2];
     }
 }
