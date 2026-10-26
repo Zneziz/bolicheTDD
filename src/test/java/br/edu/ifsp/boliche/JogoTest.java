@@ -106,4 +106,28 @@ public class JogoTest {
         assertThrows(IllegalArgumentException.class, () -> jogo.jogar(11));
     }
 
+    @Test
+    @DisplayName("V2: Segunda jogada que faz frame passar de 10 pinos nos frames 1 a 9 lança IllegalArgumentException")
+    void segundaJogadaExcedendoDezPinosLancaExcecao() {
+        jogo.jogar(7);
+        assertThrows(IllegalArgumentException.class, () -> jogo.jogar(4));
+    }
+
+    @Test
+    @DisplayName("V2 no 10º frame: Segunda jogada normal do 10º frame passando de 10 lança IllegalArgumentException")
+    void decimoFrameNormalExcedendoDezPinosLancaExcecao() {
+        jogarMuitas(18, 0); // Frames 1 a 9
+        jogo.jogar(8);
+        assertThrows(IllegalArgumentException.class, () -> jogo.jogar(3));
+    }
+
+    @Test
+    @DisplayName("V2 no 10º frame: Após strike no 10º frame, duas jogadas extras sem novo strike que somam > 10 lançam exceção")
+    void decimoFrameBonusDeStrikeExcedendoDezPinosLancaExcecao() {
+        jogarMuitas(18, 0); // Frames 1 a 9
+        jogo.jogar(10);     // Strike no 10º frame
+        jogo.jogar(7);      // 1ª jogada bônus
+        assertThrows(IllegalArgumentException.class, () -> jogo.jogar(4)); // 2ª bônus inválida (7+4=11)
+    }
+
 }
