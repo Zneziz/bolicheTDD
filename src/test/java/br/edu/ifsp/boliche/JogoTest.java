@@ -1,9 +1,21 @@
 package br.edu.ifsp.boliche;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class JogoTest {
+
+    private Jogo jogo;
+
+    private void jogarMuitas(int quantidade, int pinos) {
+        for (int i = 0; i < quantidade; i++) {
+            jogo.jogar(pinos);
+        }
+    }
+
     @Test
     @DisplayName("Nenhum pino: 20 jogadas de 0 resultam em pontuação 0")
     void nenhumPino() {
