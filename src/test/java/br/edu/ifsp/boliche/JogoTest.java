@@ -94,5 +94,16 @@ public class JogoTest {
         assertEquals(167, jogo.pontuacao());
         assertTrue(jogo.encerrado());
     }
+    @Test
+    @DisplayName("V1: Jogada com menos de 0 pinos lança IllegalArgumentException")
+    void jogadaComPinosNegativosLancaExcecao() {
+        assertThrows(IllegalArgumentException.class, () -> jogo.jogar(-1));
+    }
+
+    @Test
+    @DisplayName("V1: Jogada com mais de 10 pinos lança IllegalArgumentException")
+    void jogadaComMaisDeDezPinosLancaExcecao() {
+        assertThrows(IllegalArgumentException.class, () -> jogo.jogar(11));
+    }
 
 }
